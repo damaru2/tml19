@@ -1,7 +1,7 @@
 Repository for the Oxford reading group on Theoretical Machine Learning 
 
 ## Schedule
-+ 18/10/2019 Generalization Guarantees for Neural Networks via Harnessing the Low-rank Structure of the Jacobian ( Samet Oymak, Zalan Fabian, Mingchen Li, Mahdi Soltanolkotabi)
++ 18/10/2019 [[notes](./notes/low_rank_jac_thm.pdf)] Generalization Guarantees for Neural Networks via Harnessing the Low-rank Structure of the Jacobian ( Samet Oymak, Zalan Fabian, Mingchen Li, Mahdi Soltanolkotabi)
 + 25/10/2019 Learning with Square Loss: Localization through Offset Rademacher Complexity (Tengyuan Liang, Alexander Rakhlin, Karthik Sridharan)
 + 01/11/2019  The generalization error of random features regression: Precise asymptotics and double descent curve (Song Mei and Andrea Montanari)
 
