@@ -1,0 +1,360 @@
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+
+\section{Proofs}
+\label{section:proof}
+
+This section is dedicated for proving Theorem~\ref{thm:main-result}.
+We split the proof into two parts. In the first part, we show how
+to simultaneously exploit properties of the $\ell_{2}$ loss and
+empirical risk minimization improving upon the approach taken in
+Section~\ref{section:motivation} and deriving an unsymmetrized version
+of the offset Rademacher process.
+In the second part, we show how standard symmetrization and contraction
+arguments can be used to prove Theorem~\ref{thm:main-result}
+
+
+%----------------------------------- Part I -----------------------------------
+%------------------------------------------------------------------------------
+\subsection{Exploiting Properties of ERM and Square Loss}
+
+When conditioned on data, we will view functions as $n$-dimensional vectors,
+that is, $h = (h(x_{1}), \dots, h(x_{n}))^{\mathsf{T}}$ and
+$y = (y_{1}, \dots, y_{n})$. Further, we denote $\norm{h}_{n}^{2} =
+\frac{1}{n}\sum_{i=1}^{n} h(x_{i})^{2}$.
+
+
+\begin{lemma}
+  \label{lemma:projection}
+  Let $\hat{h}$ be an empirical risk minimizer of a closed and convex
+  class $\mathcal{H}$ with respect to the square loss $\ell$.
+  Then, for any $h \in \mathcal{H}$, we have
+  $$
+    P_{n}\ell_{h} - P_{n}\ell{\hat{h}} \geq \inlinenorm{h - \hat{h}}_{n}^{2}.
+  $$
+\end{lemma}
+
+\begin{proof}
+  Note that conditionally on the data, $\hat{h}$ is a projection
+  of $y$ on a closed and convex set $\mathcal{H}$ with respect to
+  the $\ell_{2}$ distance:
+  $$
+    \hat{y} = \argmin{h \in \mathcal{H}}{\norm{h - y}_{2}^{2}}.
+  $$
+  By first order optimality conditions the following holds for any
+  $h \in \mathcal{H}$:
+  $$
+    \ip{h - \hat{h}}{\nabla_{\hat{h}}\norm{\hat{h} - y}_{2}^{2}}
+    \geq 0
+  $$
+  which implies that
+  \begin{align*}
+    P_{n}\ell_{h} - P_{n}\ell{\hat{h}} - \inlinenorm{h - \hat{h}}_{n}^{2}
+    &=
+    \inlinenorm{h - y}_{n}^{2} - \inlinenorm{\hat{h} - y}_{n}^{2} - \inlinenorm{h - \hat{h}}_{n}^{2} \\ &=
+    \frac{1}{n}
+    \left(\inlinenorm{h - \hat{h} + \hat{h} - y}_{2}^{2} - \inlinenorm{\hat{h} - y}_{2}^{2}
+    - \inlinenorm{h - \hat{h}}_{2}^{2}\right) \\
+    &=
+    \frac{1}{n}\left(
+      2\ip{h -\hat{h}}{\hat{h} - y}
+    \right) \\
+    &=
+    \frac{1}{n}\ip{h - \hat{h}}{\nabla_{\hat{h}}\norm{\hat{h} - y}_{2}^{2}} \\
+    &\geq 0
+  \end{align*}
+  which completes our proof.
+\end{proof}
+
+In contrast to the approach taken in
+Equation~\eqref{eq:excess-risk-decomposition} for the excess risk decomposition,
+instead of simply removing the term
+$P_{n}(\ell_{\hat{h}} - \ell_{h^{*}})$ we can subtract a non-negative term
+$\inlinenorm{\hat{h} - h^{\star}}_{n}^{2} = P_{n}(\hat{h} - h^{\star})^{2}$.
+This observation gives rise to the unsymmetrized version of the offset
+Rademacher complexity as shown in the next lemma.
+
+\begin{lemma}
+  \label{lemma:unsymmetrized-version}
+  The following deterministic upper-bound holds for the excess risk of an
+  empirical risk minimization algorithm:
+  \begin{align*}
+    P\ell_{\hat{h}} - P\ell_{h^{\star}}
+    \leq
+    2(P-P_{n})(\hat{h} - h^{\star})(h^{\star} - Y)
+    + P(\hat{h} - h^{\star})^{2} - 2P_{n}(\hat{h} - h^{\star})^{2}.
+  \end{align*}
+\end{lemma}
+
+\begin{proof}
+  Applying Lemma~\ref{lemma:projection} to the middle term in the
+  decomposition given in Equation~\eqref{eq:excess-risk-decomposition} we
+  obtain
+  \begin{align*}
+    P\ell_{\hat{h}} - P\ell_{h^{\star}}
+    &=
+    (P\ell_{\hat{h}}
+    - P_{n}\ell_{\hat{h}})
+    + (P_{n}{\ell_{\hat{h}}}
+    - P_{n}{\ell_{h^{\star}}})
+    + (P_{n}{\ell_{h^{\star}}}
+    - P\ell_{h^{\star}}) \\
+    &\leq
+    (P-P_{n})(\hat{h}(X) - Y)^{2}
+    - (P-P_{n})(h^{\star} - Y)^{2}
+    - P_{n}(\hat{h} - h^{\star})^{2} \\
+    &= (P-P_{n})((\hat{h} - h^\star)^{2} + 2(\hat{h} - h^{\star})(h^{\star}
+    - Y))
+    - P_{n}(\hat{h} - h^{\star})^{2} \\
+    &= 2(P-P_{n})(\hat{h} - h^{\star})(h^{\star} - Y)
+    + P(\hat{h} - h^{\star})^{2} - 2P_{n}(\hat{h} - h^{\star})^{2}.
+  \end{align*}
+\end{proof}
+
+%---------------------------------- Part II -----------------------------------
+%------------------------------------------------------------------------------
+\subsection{Proof of Theorem~\ref{thm:main-result}}
+Finishing the proof relies on classical symmetrization and contraction
+techniques applied to the result of Lemma~\ref{lemma:unsymmetrized-version}.
+While the classical symmetrization and contraction results do not directly
+apply to the offset process given in Lemma~\ref{lemma:unsymmetrized-version},
+the proofs of symmetrization and contraction ``go through'' when applied
+to the offset process.
+
+By Lemma~\ref{lemma:unsymmetrized-version} we have
+\begin{align*}
+  \ex{P\ell_{\hat{h}} - P\ell_{h^{\star}}}
+  &\leq
+    \ex{
+      \sup_{h \in \mathcal{H}}
+      \left\{
+      2(P-P_{n})(\hat{h} - h^{\star})(h^{\star} - Y)
+      + P(\hat{h} - h^{\star})^{2} - 2P_{n}(\hat{h} - h^{\star})^{2}
+      \right\}
+     } \\
+  &=
+    \ex{
+      \sup_{f \in \mathcal{H} - h^{\star}}
+      \left\{
+      2(P-P_{n})f(h^{\star} - Y)
+      + Pf^{2} - 2P_{n}f^{2}
+      \right\}
+     } \\
+  &\leq
+    \ex{
+      \sup_{f \in \mathcal{H} - h^{\star}}
+      \left\{
+      2(P-P_{n})f(h^{\star} - Y) - \frac{1}{2}P_{n}f^{2}
+      + Pf^{2} - \frac{3}{2}P_{n}f^{2}
+      \right\}
+     } \\
+  &\leq
+    \underbrace{
+      \ex{
+        \sup_{f \in \mathcal{H} - h^{\star}}
+        \left\{
+        2(P-P_{n})f(h^{\star} - Y) - \frac{1}{4}Pf^{2} - \frac{1}{4}P_{n}f^{2}
+        \right\}
+       }
+    }_{T_{1}} \\
+    &\quad+
+    \underbrace{
+      \ex{
+        \sup_{f \in \mathcal{H} - h^{\star}}
+        \left\{
+        \frac{5}{4}Pf^{2} - \frac{7}{4}P_{n}f^{2}
+        \right\}
+       }
+    }_{T_{2}}.
+\end{align*}
+We will now deal with the terms $T_{1}$ and $T_{2}$ separately.
+Combining the obtained upper-bounds yields the desired result.
+
+
+%---------------------- Dealing With the Multiplier Term ----------------------
+%------------------------------------------------------------------------------
+\subsubsection{Bounding \texorpdfstring{$T_{1}$}{T1}}
+We introduce an independent copy $(x'_{i}, y'_{i})$ of the data
+and let $P_{n}' = \frac{1}{n}\sum_{i=1}^{n}\delta_{(x_{i}', y_{i}')}$.
+Let $\varepsilon_{i}$ be i.i.d. Rademacher random variables independent of
+everything else.
+Finally, we will denote
+$h^{\star}(x_{i}) - y_{i} = \xi_{i}$
+and
+$h^{\star}(x_{i}) - y_{i} = \xi'_{i}$
+We can then symmetrize $T_{1}$ as follows
+\begin{align*}
+  T_{1}
+  &=
+  \ex{
+    \sup_{f \in \mathcal{H} - h^{\star}}
+    \left\{
+    \exd{(x',y')}{
+      2(P'_{n}-P_{n})f(h^{\star} - Y) - \frac{1}{4}P'f^{2} -
+      \frac{1}{4}P_{n}f^{2}}
+    \right\}
+   } \\
+ &\leq
+  \exd{(x_{i}, y_{i}), (x'_{i}, y'_{i})}{
+    \sup_{f \in \mathcal{H} - h^{\star}}
+    \left\{
+      2(P'_{n}-P_{n})f(h^{\star} - Y) - \frac{1}{4}P_{n}'f^{2} -
+      \frac{1}{4}P_{n}f^{2}
+    \right\}
+   } \\
+ &=
+  \exd{(x_{i}, y_{i}), (x'_{i}, y'_{i}), \varepsilon}{
+    \sup_{f \in \mathcal{H} - h^{\star}}
+    \left\{
+      2\frac{1}{n}\sum_{i=1}^{n}
+        \varepsilon_{i}(
+          f(x'_{i})\xi_{i}'
+          - f(x_{i})\xi_{i}
+          )
+      - \frac{1}{4}P_{n}'f^{2} -
+        \frac{1}{4}P_{n}f^{2}
+    \right\}
+   } \\
+ &\leq
+  2 \exd{(x_{i}, y_{i}), \varepsilon}{
+    \sup_{f \in \mathcal{H} - h^{\star}}
+    \left\{
+      \frac{1}{n}\sum_{i=1}^{n}
+        2\varepsilon_{i}f(x_{i})\xi_{i}
+        - \frac{1}{4}P_{n}f^{2}
+    \right\}
+   } \\
+\end{align*}
+Recall that $\inlineabs{\xi_{i}} = \inlineabs{h^{\star}(x_{i}) - y_{i}} \leq B
++ Y$.
+We can now use Talagrand's contraction argument to get rid of the
+bounded multipliers $\xi_{i}$.
+To do so, we compute the expected supremum with respect to $\varepsilon_{1}$
+conditionally data and $\varepsilon_{2}, \dots, \varepsilon_{n}$ as follows:
+\begin{align*}
+  &2\exd{\varepsilon_{1}}{
+      \sup_{f \in \mathcal{H} - h^{\star}}
+      \left\{
+        \frac{1}{n}\sum_{i=1}^{n}
+          2\varepsilon_{i}f(x_{i})\xi_{i}
+          - \frac{1}{4}P_{n}f^{2}
+      \right\}
+  } \\
+  &=
+      \sup_{f \in \mathcal{H} - h^{\star}}
+      \left\{
+        2f(x_{1})\xi_{1} + \frac{1}{n}\sum_{i=2}^{n}
+          2\varepsilon_{i}f(x_{i})\xi_{i}
+          - \frac{1}{4}P_{n}f^{2}
+      \right\} \\
+  &\qquad+
+      \sup_{g \in \mathcal{H} - h^{\star}}
+      \left\{
+        -2g(x_{1})\xi_{1} + \frac{1}{n}\sum_{i=2}^{n}
+          2\varepsilon_{i}g(x_{i})\xi_{i}
+          - \frac{1}{4}P_{n}g^{2}
+      \right\} \\
+  &=
+      \sup_{f,g \in \mathcal{H} - h^{\star}}
+      \left\{
+        2\xi_{1}(f(x_{1}) - g(x_{1}))
+        + \frac{1}{n}\sum_{i=2}^{n}
+          2\varepsilon_{i}(f(x_{i}) + g(x_{i}))\xi_{i}
+          - \frac{1}{4}P_{n}(f^{2} + g^{2})
+      \right\} \\
+  &\leq
+      \sup_{f,g \in \mathcal{H} - h^{\star}}
+      \left\{
+        2(B + Y)\inlineabs{f(x_{1}) - g(x_{1})}
+        + \frac{1}{n}\sum_{i=2}^{n}
+          2\varepsilon_{i}(f(x_{i}) + g(x_{i}))\xi_{i}
+          - \frac{1}{4}P_{n}(f^{2} + g^{2})
+      \right\} \\
+  &=
+      \sup_{f,g \in \mathcal{H} - h^{\star}}
+      \left\{
+        2(B + Y)(f(x_{1}) - g(x_{1}))
+        + \frac{1}{n}\sum_{i=2}^{n}
+          2\varepsilon_{i}(f(x_{i}) + g(x_{i}))\xi_{i}
+          - \frac{1}{4}P_{n}(f^{2} + g^{2})
+      \right\} \\
+  &= 2\exd{\varepsilon_{1}}{
+      \sup_{f \in \mathcal{H} - h^{\star}}
+      \left\{
+        2(B + Y)\varepsilon_{1}f(x_{1})
+        + \frac{1}{n}\sum_{i=2}^{n}
+          2\varepsilon_{i}f(x_{i})\xi_{i}
+          - \frac{1}{4}P_{n}f^{2}
+      \right\}
+    }.
+\end{align*}
+Repeating the same argument for $\varepsilon_{2}, \dots, \varepsilon_{n}$,
+we obtain
+\begin{align}
+  \label{eq:t1-bound}
+  T_{1} \leq 2(B+Y)
+  \ex{\sup_{f \in \mathcal{H} - h^{\star}}
+      \left\{
+        2R_{n}f - \frac{1}{4(B+Y)}P_{n}f^{2}
+      \right\}
+  }.
+\end{align}
+
+
+%---------------------- Dealing With the Quadratic Term -----------------------
+%------------------------------------------------------------------------------
+\subsubsection{Bounding \texorpdfstring{$T_{2}$}{T2}}
+We begin by symmetrization similarly as before
+\begin{align*}
+  T_{2}
+  &= \ex{
+      \sup_{f \in \mathcal{H} - h^{\star}}
+      \left\{
+      \frac{5}{4}Pf^{2} - \frac{7}{4}P_{n}f^{2}
+      \right\}
+     } \\
+  &= \ex{
+      \sup_{f \in \mathcal{H} - h^{\star}}
+      \left\{
+      \frac{6}{4}(P - P_{n})f^{2} - \frac{1}{4}Pf^{2} - \frac{1}{4}P_{n}f^{2}
+      \right\}
+     } \\
+  &\leq  2\ex{
+      \sup_{f \in \mathcal{H} - h^{\star}}
+      \left\{
+      \frac{6}{4}R_{n}f^{2} - \frac{1}{4}P_{n}f^{2}
+      \right\}
+     }.
+\end{align*}
+Further, noting that for any $f,g \in \mathcal{H} - h^{\star}$
+and any $x$ we have
+$$
+  \abs{f(x)^{2} - g(x)^{2}}
+  \leq \abs{(f(x) - g(x)} \cdot 4B
+$$
+and following the same contraction argument as before, we obtain
+
+\begin{align}
+  T_{2}
+  &\leq 2
+  \ex{\sup_{f \in \mathcal{H} - h^{\star}}
+      \left\{
+        3B \cdot 2R_{n}f - \frac{1}{4}P_{n}f^{2}
+      \right\}
+  } \notag \\
+  &= 6B
+  \ex{\sup_{f \in \mathcal{H} - h^{\star}}
+      \left\{
+        3B \cdot 2R_{n}f - \frac{1}{12B}P_{n}f^{2}
+      \right\}
+  }
+  \label{eq:t2-bound}
+\end{align}
+%---------------------------- Completing the Proof ----------------------------
+%------------------------------------------------------------------------------
+\subsection{Completing the Proof}
+We are done immediately by Equations~\eqref{eq:t1-bound} and
+\eqref{eq:t2-bound}.
+
+\end{document}

@@ -2,6 +2,60 @@
 
 \begin{document}
 
-\citet{liang2015learning}
+\section{Set Up}
+\label{section:set-up}
+
+We observe $n$ data points $(x_{i}, y_{i}) \in \mathcal{X} \times \R$
+sampled i.i.d.\ from some unknown distribution $P$.
+Let $\mathcal{H}$ be a closed and convex \emph{hypothesis class} containing
+functions mapping $\mathcal{X}$ to $\R$. Further, let $\ell(\hat{y}, y) =
+(\hat{y} - y)^{2}$ denote the square loss function and for every
+$h \in \mathcal{H}$ let $\ell_{h}(x,y) = \ell(h(x), y)$.
+We measure the quality of a hypothesis $h$ with respect to the unknown
+distribution $P$ with the \emph{population loss} defined as
+$$
+  P\ell_{h} = \exd{(X,Y) \sim P}{\ell(h(X), Y)}.
+$$
+The best function in class $\mathcal{H}$ will be denoted by
+$h^{\star}$ and given by
+$$
+  h^{\star} = \argmin{h \in \mathcal{H}}{P\ell_{h}}
+$$
+assuming that the above $\argmin{}{}$ exists.
+For an estimator $\hat{h}$ we are interested in upper-bounding the
+\emph{excess risk} given by
+$$
+  \mathcal{E}(\hat{h}) = P\ell_{\hat{h}} - P\ell_{h^{\star}}.
+$$
+Since the distribution $P$ is unknown we cannot evaluate any of the above
+expressions. Instead, we can replace the distribution $P$ with its empirical
+counterpart
+$$
+  P_{n} = \frac{1}{n} \sum_{i=1}^{n} \delta_{x_{i}, y_{i}}
+$$
+where $\delta_{x_{i}, y_{i}}$ denotes point mass on the sample $(x_{i},
+y_{i})$.
+We will study the \emph{empirical risk minimization} (ERM) estimator
+$\hat{h}$ given by
+$$
+  \hat{h}
+  = \argmin{h \in H}{P_{n}\ell_{h}}
+  = \argmin{h \in H}{\frac{1}{n} \sum_{i=1}^{n} (h(x_{i}) - y_{i})^{2}}.
+$$
+To summarize, we will study the \emph{excess risk} of an \emph{empirical risk
+  minimization}
+algorithm performed over a closed and \emph{convex} class $\mathcal{H}$.
+In particular, we will present a novel complexity measure of $\mathcal{H}$
+introduced by \citet{liang2015learning} which is based on a modification of
+Rademacher complexities and is applicable to estimators obtained by performing
+empirical risk minimization.
+
+\begin{remark}
+  We will only present a subset of results presented in \citet{liang2015learning}.
+  In what follows, we will only consider excess loss in expectation and
+  assume boundedness of the functions and observations.
+  See the paper for extensions to high-probability results, relaxation of
+  boundedness assumptions and relaxation of convexity of $\mathcal{H}$.
+\end{remark}
 
 \end{document}

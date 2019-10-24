@@ -1,0 +1,117 @@
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+
+\section{A Motivating Example}
+\label{section:motivation}
+
+Consider the following problem of bounding excess loss of bounded linear
+predictors.
+\begin{problem}[Excess Risk of Bounded Linear Regression]
+  \label{problem:linear-predictors}
+  Let $\mathcal{X} = \{x \in \R^{d} : \norm{x}_{2} \leq 1\}$,
+  $\mathcal{Y} = [-Y, Y]$ and
+  $\mathcal{H} = \{\ip{x}{\cdot} : x \in R^{d}, \norm{x}_{2} \leq B\}$.
+  We want to obtain an upper-bound on
+  $$
+    \ex{
+      P\ell_{\hat{h}} - P\ell_{h^{\star}}
+    }.
+  $$
+\end{problem}
+
+A classical approach for controlling the excess risk goes as follows.
+First consider the decomposition
+\begin{equation}
+  P\ell_{\hat{h}} - P\ell_{h^{\star}}
+  =
+  (P\ell_{\hat{h}}
+  - P_{n}\ell_{\hat{h}})
+  + (P_{n}{\ell_{\hat{h}}}
+  - P_{n}{\ell_{h^{\star}}})
+  + (P_{n}{\ell_{h^{\star}}}
+  - P\ell_{h^{\star}}).
+  \label{eq:excess-risk-decomposition}
+\end{equation}
+Since the second term is always non-positive and the third term is equal to
+$0$ in expectation, we obtain
+$$
+  \ex{P\ell_{\hat{h}} - P\ell_{h^{\star}}}
+  \leq
+  \ex{(P-P_{n})\ell_{\hat{h}}}
+  \leq
+  \ex{\sup_{h \in \mathcal{H}} (P-P_{n})\ell_{\hat{h}}}.
+$$
+Hence the expected excess risk is upper-bounded by the supremum of
+the empirical process $(P - P_{n})$ indexed by $\mathcal{H}$.
+
+Let $\varepsilon_{1}, \dots, \varepsilon_{n}$ be a sequence of i.i.d.\
+$\{-1, +1\}$ (Rademacher) random variables independent of the data.
+Let $R_{n} \coloneqq \frac{1}{n} \sum_{i=1}^{n} \varepsilon_{i}\delta_{(x_{i},
+y_{i})}$ so that $R_{n}$ is a \emph{Rademacher process} indexed
+by $\mathcal{H}$.
+Denote $\ell \circ \mathcal{H} = \{ \ell_{h} : h \in \mathcal{H} \}$.
+A classical symmetrization argument then shows that
+$$
+  \ex{\sup_{h \in \mathcal{H}} (P-P_{n})\ell_{\hat{h}}}
+  \leq
+  2 \exd
+     {(x_{i}, y_{i}), \varepsilon_{i}}
+     {\sup_{h \in \mathcal{H}} R_{n}\ell_{\hat{h}}}
+ \eqqcolon 2 \mathfrak{R}(\ell \circ \mathcal{H})
+$$
+where $\mathfrak{R}(\mathcal{\ell \circ H})$ is called the
+\emph{Rademacher complexity} of $(\ell \circ \mathcal{H}, P)$.
+Moving from $P - P_{n}$ to $R_{n}$ allows to work conditionally on data, that
+is, with finite dimensional objects which is a considerable simplification in
+most settings. The cost of moving from $P - P_{n}$ to $R_{n}$ is only a
+multiplicative factor.
+
+Denote $\exd{\varepsilon}{\cdot}
+= \exd{\varepsilon}{\cdot \mid (X_{i}, Y_{i})}$.
+Going back to problem~\ref{problem:linear-predictors} we can now upper-bound
+the excess risk as follows:
+\begin{align}
+  \ex{P\ell_{\hat{h}} - P\ell_{h^{\star}}}
+  &\leq 2 \mathfrak{R}(\mathcal{H}) \notag \\
+  &= 2 \ex{
+    \exd{\varepsilon}{\sup_{h \in \mathcal{H}}
+      \frac{1}{n} \sum_{i=1}^{n} \varepsilon_{i} \ell_{h}(x_{i}, y_{i})
+    }
+  } \notag \\
+  &\leq 4(Y + B)\, \ex{
+    \exd{\varepsilon}{\sup_{h \in \mathcal{H}}
+      \frac{1}{n} \sum_{i=1}^{n} \varepsilon_{i} h(x_{i})
+    }
+  } & \text{since $\ell(\cdot, y)$ is $2(Y + B)$-Lipschitz} \notag \\
+  &= 4(Y + B) \ex{
+    \exd{\varepsilon}{\sup_{\norm{w}_{2} \leq B}
+      \frac{1}{n} \ip{w}{\sum_{i=1}^{n} \varepsilon_{i}x_{i}}
+    }
+  } \notag \\
+  &\leq 4(Y+B)B\, \ex{
+    \exd{\varepsilon}{
+      \frac{1}{n} \norm{\sum_{i=1}^{n} \varepsilon_{i}x_{i}}_{2}
+    }
+  } & \text{by Cauchy-Schwarz inequality} \notag \\
+  &\leq 4(Y +B)B\, \ex{
+    \exd{\varepsilon}{
+      \frac{1}{n^{2}} \norm{\sum_{i=1}^{n} \varepsilon_{i}x_{i}}_{2}^{2}
+    }^{1/2}
+  } & \text{by Jensen's inequality} \notag \\
+  &= 4(Y +B)B\, \ex{
+    \exd{\varepsilon}{
+      \frac{1}{n^{2}} \sum_{i=1}^{n} \norm{x_{i}}_{2}^{2}
+    }^{1/2}
+  } \notag \\
+ &\leq \frac{4(Y+B)B}{\sqrt{n}}. \label{eq:rademacher-bound}
+\end{align}
+The below bound scales as $\Omega(1/\sqrt{n})$. However, it is possible to
+obtain bounds scaling as $O(1/n)$, however, with different dependence on
+the constants $B$ and $Y$ and linear dependence on $d$ as shown
+in \citet{shamir2015sample}.
+
+
+
+
+\end{document}

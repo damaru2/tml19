@@ -1,0 +1,181 @@
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+
+\section{Offset Rademacher Complexity}
+\label{section:offset-complexity}
+
+The sub-optimality of the bound given in Equation~\eqref{eq:rademacher-bound}
+comes from inability to fully take advantage of $\hat{h}$ being an empirical
+risk minimizer. While in Equation~\eqref{eq:excess-risk-decomposition} we
+exploit the fact that $P_{n}\ell_{\hat{h}} - P_{n}\ell_{h^{\star}} \leq 0$,
+when controlling the supremum of $P - P_{n}$ over $\ell \circ \mathcal{H}$
+we do not take into account, that our algorithm will never pick hypotheses
+with large empirical error. In particular, our algorithm
+should implicitly only consider subsets of $\mathcal{H}$ which decrease as
+the sample size $n$ increases. This is achieved by \emph{offset Rademacher
+  complexity} defined below\footnote{
+  For an alternative approach (\emph{local Rademacher complexities})
+  developed in 2000-2005 see \citet{bartlett2005local} and references therein.
+  See also a closely related paper \citet{mendelson2014learning} fixing
+  boundedness and correct scaling with respect to the noise level issues.
+} defined below.
+
+\begin{definition}[Offset Rademacher Complexity]
+  We will call $2R_{n}h - cP_{n}h^{2}$ an \emph{offset Rademacher process} (with
+  parameter $c > 0$) indexed by $\mathcal{H}$.
+  The \emph{offset Rademacher complexity} of a class $\mathcal{H}$ is
+  given by the expected supremum of the offset Rademacher process as follows:
+  $$
+    \mathfrak{R}^{c}(\mathcal{H})
+    = \exd{(x_{i}, y_{i}), \varepsilon_{i}}{
+      \sup_{h \in \mathcal{H}} (2R_{n}h - P_{n}h^{2})
+    }
+    = \exd{(x_{i}, y_{i}), \varepsilon_{i}}{
+      \sup_{h \in \mathcal{H}} \frac{1}{n}\sum_{i=1}^{n}
+      \left\{ 2\varepsilon_{i}h(x_{i}) - ch(x_{i})^{2}\right\}
+    }.
+  $$
+\end{definition}
+
+Note that for $c = 0$ we recover the Rademacher process/complexity.
+When $c > 0$ due to non-negativity of quadratic terms, the offset Rademacher
+process is point-wise upper-bounded by the usual Rademacher process.
+Finally, note that the term $-cP_{n}h^{2}$ intuitively penalizes
+hypotheses with large empirical error, thus excluding them from the
+consideration in our upper-bounds.
+The following theorem shows that $\mathfrak{R}^{c}(\mathcal{H})$ can be
+used to upper-bound the excess risk, which is the main result of these notes.
+
+\begin{theorem}
+  \label{thm:main-result}
+  Let $\mathcal{H}$ be a closed and convex hypothesis class.
+  Further, suppose that $\mathcal{Y} = [-Y, Y]$ and our functions are bounded
+  on $\mathcal{X}$, that is, $\sup_{h \in \mathcal{H}, x \in \mathcal{X}}
+    h(x) \leq B$. Denote $\mathcal{H} - h^{\star} = \{
+      h - h^{\star} : h \in \mathcal{H}\}$.
+  Then, the following holds for an empirical risk minimizer
+  $\hat{h}$:
+  $$
+    \ex{P\ell_{\hat{h}} - P\ell_{h^{\star}}}
+    \leq
+    (8B + 2Y) \mathfrak{R}^{c}(\mathcal{H} - h^{\star})
+  $$ with $c = \frac{1}{12(B + Y)}$.
+\end{theorem}
+
+We defer the proof to Section~\ref{section:proof} and come back to
+problem~\ref{problem:linear-predictors}. To obtain a bound on the excess risk,
+we now simply need to upper-bound the offset Rademacher complexity.
+This is achieved by the following lemma.
+
+\begin{lemma}
+  \label{lemma:linear-predictors-offset-complexity}
+  Consider the setting of problem~\ref{problem:linear-predictors}.
+  Then, for any $c > 0$ we have
+  $$
+    \mathfrak{R}^{c}(\mathcal{H} - h^{\star})
+    \leq \frac{d}{cn}.
+  $$
+\end{lemma}
+
+\begin{proof}
+  Condition on the data and let $\frac{1}{n}\sum_{i=1}^{n}
+  x_{i}x_{i}^{\mathsf{T}} = \Sigma$, which will be assumed to be invertible.
+  Then
+  \begin{align*}
+    &\hphantom{\leq}\,\,\,\exd{\varepsilon}{
+      \sup_{h \in \mathcal{H}} (R_{n}(h-h^{\star}) - cP_{n}(h - h^{\star})^{2})
+    } \\
+    &\leq
+    \exd{\varepsilon}{
+      \sup_{w \in \R^{d}} \frac{1}{n} \sum_{i=1}^{n}
+      \left\{
+        \varepsilon_{i}\ip{w}{x_{i}} - c\ip{w}{x_{i}}^{2}
+      \right\}
+  } & \text{sup over a larger class} \\
+    &=
+    \exd{\varepsilon}{
+      \sup_{w \in \R^{d}}
+      \left\{
+        \ip{w}{\frac{1}{n}\sum_{i=1}^{n}\varepsilon_{i}x_{i}}
+        - w^{\mathsf{T}}\left(c\Sigma\right)w
+      \right\}
+    }
+  \end{align*}.
+  The expression in the curly brackets can be seen to equal the
+  Fenchel-Legendre transform of the function $f(w) = w^{\mathsf{T}}(c\Sigma)w$
+  applied to the vector $\frac{1}{n}\sum_{i=1}^{n}\varepsilon_{i}x_{i}$.
+  The Fenchel-Legendre transform of $f$ is equal to $f^{\star}(w) =
+   w^{\mathsf{T}}(c\Sigma)^{-1}w$. Hence
+  we can carry on as follows:
+  \begin{align*}
+    &\hphantom{\leq}\,\,\,\exd{\varepsilon}{
+      \sup_{w \in \R^{d}}
+      \left\{
+        \ip{w}{\frac{1}{n}\sum_{i=1}^{n}\varepsilon_{i}x_{i}}
+        - w^{\mathsf{T}}\left(c\Sigma\right)w
+      \right\}
+    } \\
+    &=
+    \exd{\varepsilon}{
+      \frac{1}{n^{2}}
+      \left(\sum_{i=1}^{n} \varepsilon_{i}x_{i}\right)^{\mathsf{T}}
+      \left(c\Sigma\right)^{-1}
+      \left(\sum_{i=1}^{n} \varepsilon_{i}x_{i}\right)
+    } \\
+    &=
+    \exd{\varepsilon}{
+      \frac{1}{n^{2}}
+      \sum_{i=1}^{n}
+      x_{i}^{\mathsf{T}}
+      \left(c\Sigma\right)^{-1}
+      x_{i}
+    } \\
+    &=
+    \exd{\varepsilon}{
+      \frac{1}{n^{2}}
+      \sum_{i=1}^{n}
+      \operatorname{trace}\left({x_{i}^{\mathsf{T}}
+      \left(c\Sigma\right)^{-1}
+      x_{i}}\right)
+    } \\
+    &=
+    \exd{\varepsilon}{
+      \frac{1}{n^{2}}
+      \operatorname{trace}\left(
+      \left(c\Sigma\right)^{-1}
+      n\Sigma \right)
+    } \\
+    &= \frac{d}{nc}.
+  \end{align*}
+\end{proof}
+
+Theorem~\ref{thm:main-result} together with
+Lemma~\ref{lemma:linear-predictors-offset-complexity}
+yield an $O(1/n)$ upper-bound for problem~\ref{problem:linear-predictors}
+as shown in the following corollary.
+\begin{corollary}
+  \label{corollary:linear-predictors-fast-rates}
+  Combining results of Theorem~\ref{thm:main-result} and
+  Lemma~\ref{lemma:linear-predictors-offset-complexity} we obtain
+  \begin{align*}
+    \ex{P\ell_{\hat{h}} - P\ell_{h^{\star}}}
+    &\leq
+    (8B + 2Y) \mathfrak{R}^{1/(12(B+Y))}(\mathcal{H} - h^{\star}) \\
+    &\leq
+    96\frac{(B+Y)^{2}d}{n}.
+  \end{align*}
+\end{corollary}
+
+\begin{remark}
+  Despite obtaining a bound which scales as $O(1/n)$ the above result
+  is sub-optimal in terms of scaling with $B$ and $Y$.
+  As shown in \citet{shamir2015sample}, the correct scaling (possibly up to
+  a $\log(1 + n/d)$ factor in the middle term) is
+  $$\Theta\left(Y^{2} \wedge \frac{B^{2} + Y^{2}d}{n} \wedge
+    \frac{YB}{\sqrt{n}}\right).
+  $$
+\end{remark}
+
+
+\end{document}
