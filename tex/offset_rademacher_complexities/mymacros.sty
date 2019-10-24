@@ -1,0 +1,81 @@
+% Absolute values.
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\inlineabs}[1]{\lvert #1 \rvert}
+
+% Norms.
+\providecommand{\norm}{}
+\renewcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\inlinenorm}[1]{\lVert #1 \rVert}
+
+% Floor and ceiling.
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\inlinefloor}[1]{\lfloor #1 \rfloor}
+\newcommand{\inlineceil}[1]{\lceil #1 \rceil}
+
+% Metric and vector notation.
+\renewcommand{\matrix}[1]{\ensuremath{\bm{#1}}}
+\newcommand{\matrixid}{\ensuremath{\matrix{I}}}
+\renewcommand{\vec}[1]{\ensuremath{\bm{#1}}}
+\newcommand{\vecid}[1]{\ensuremath{\vec{1}_{#1}}}
+
+% Notation for regression.
+\newcommand{\X}{\ensuremath{\matrix{X}}}
+\newcommand{\Xt}{\ensuremath{\X^{\mathsf{T}}}}
+\newcommand{\XtX}{\ensuremath{\X^{\mathsf{T}}\X}}
+\newcommand{\maxnoise}{
+  \ensuremath{\norm{\frac{1}{n} \Xt \vec{\xi}}_{\infty}}}
+\newcommand{\inlinemaxnoise}{
+  \ensuremath{\inlinenorm{\Xt \vec{\xi}}_{\infty} / n}}
+
+
+\newcommand{\wstar}{\ensuremath{\vec{w}^{\star}}}
+\newcommand{\wmax}{\ensuremath{w^{\star}_{\max}}}
+\newcommand{\wmin}{\ensuremath{w^{\star}_{\min}}}
+
+
+% Notation shorthand for real numbers.
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+
+% For writing the nullspace.
+\newcommand{\nullspace}{\ensuremath{\operatorname{null}}}
+
+% Probability operator.
+\newcommand{\pr}[1]{\ensuremath{\mathbb{P}\!\left({#1}\right)}}
+\newcommand{\cpr}[2]{\ensuremath{\mathbb{P}\!\left({#1} \mid {#2}\right)}}
+
+% Expectation operator.
+\newcommand{\ex}[1]{\ensuremath{\mathbb{E}\!\left[{#1}\right]}}
+\newcommand{\exd}[2]
+  {\ensuremath{\underset{{#1}}{\mathbb{E}}\!\left[{#2}\right]}}
+\newcommand{\cex}[2]
+  {\ensuremath{\mathbb{E}\!\left[{#1} \mid {#2}\right]}}
+
+% Variance, co-variance and correlation operators.
+\providecommand{\var}{}
+\renewcommand{\var}[1]{\ensuremath{\mathrm{Var}\!\left[{#1}\right]}}
+\newcommand{\vard}[2]{\ensuremath{\mathrm{Var}_{{#1}}\!\left[{#2}\right]}}
+\newcommand{\cvar}[2]
+  {\ensuremath{\mathrm{Var}\!\left[{#1} \mid {#2}\right]}}
+\providecommand{\cov}{}
+\renewcommand{\cov}[2]
+  {\ensuremath{\mathrm{Cov}\!\left[{#1}, {#2}\right]}}
+\newcommand{\covd}[3]
+  {\ensuremath{\mathrm{Cov}_{{#1}}\!\left[{#2}, {#3}\right]}}
+\newcommand{\corr}[2]
+  {\ensuremath{\mathrm{Corr}\!\left[{#1}, {#2}\right]}}
+
+% Integration.
+\newcommand{\myint}[3]
+  {\ensuremath{\int_{{#1}}^{{#2}} {#3}}}
+
+% Arg min operator.
+\newcommand{\argmin}[1]
+  {\underset{#1}{\operatorname{arg}\!\operatorname{min}}}
+
+
+% Optimal point.
+\newcommand{\xstar}{\ensuremath{\vec{x}^{\star}}}
+% Inner products.
+\newcommand{\ip}[2]{\ensuremath{\left\langle {#1}, {#2} \right\rangle}}
+\newcommand{\inlineip}[2]{\ensuremath{\langle {#1}, {#2} \rangle}}

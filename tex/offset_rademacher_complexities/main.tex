@@ -1,0 +1,99 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsthm}         % typesetting theorems
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{amssymb}        % definitions of mathematical symbols
+\usepackage{mathtools}      % useful tools for mathematical typesetting
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{subfiles}       % loading tex files
+\usepackage{bbold}          % for \mathbb{1} to work
+\usepackage{xcolor}         % enable coloured text
+\usepackage{subcaption}     % for side by side figures
+\usepackage{bm}             % for bold math symbols
+\usepackage[left=3cm, right=3cm, bottom=4cm]{geometry} % Setting the margins.
+\usepackage[parfill]{parskip}
+\usepackage{natbib}
+\usepackage{titling}        % for moving title around.
+\usepackage{graphicx}
+\usepackage[outdir=./]{epstopdf} % For converting eps-to-pdf in correct directory.
+
+
+%----------------------------------- Colors -----------------------------------
+%------------------------------------------------------------------------------
+\definecolor{myred}{HTML}{880000}
+\definecolor{mygreen}{HTML}{008800}
+\definecolor{myblue}{HTML}{000088}
+\definecolor{linkblue}{HTML}{0000BB}
+
+%---------------------------- Colors of Hyperlinks ----------------------------
+%------------------------------------------------------------------------------
+\hypersetup{
+  colorlinks,
+  linkcolor={myred},
+  citecolor={myblue},
+  urlcolor={linkblue}
+}
+
+%---------------------------- For inkscape-figures ----------------------------
+%------------------------------------------------------------------------------
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\newcommand{\incfig}[1]{%
+  \def\svgwidth{\columnwidth}
+  \import{./figures/}{#1.pdf_tex}
+}
+\pdfsuppresswarningpagegroup=1
+
+
+% Fix amsthm incompatibility with \usepackage[parfill]{parskip}, see:
+% https://tex.stackexchange.com/questions/25346/wrong-spacing-before-theorem-environment-amsthm/26350
+\begingroup
+\makeatletter
+\@for\theoremstyle:=definition,remark,plain\do{%
+  \expandafter\g@addto@macro\csname
+  th@\theoremstyle\endcsname{%
+    \addtolength\thm@preskip\parskip
+  }%
+}
+\endgroup
+
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newtheorem{proposition}{Proposition}
+\newtheorem{question}{Question}
+\newtheorem{definition}{Definition}
+%------------------------------- My Definitions -------------------------------
+%------------------------------------------------------------------------------
+
+\usepackage{mymacros}
+
+%----------------------------------- Title ------------------------------------
+%------------------------------------------------------------------------------
+
+%\setlength{\droptitle}{-5em}
+\title{Notes on the Offset Rademacher Complexities Paper}
+\author{Tomas Va\v{s}kevi\v{c}ius}
+
+\begin{document}
+
+\maketitle
+
+%--------------------------------- Sub-files ----------------------------------
+%------------------------------------------------------------------------------
+\subfile{introduction.tex}
+
+%-------------------------------- Bibliography --------------------------------
+%------------------------------------------------------------------------------
+\bibliographystyle{abbrvnat}
+\bibliography{references}
+
+\end{document}
