@@ -6,7 +6,7 @@ Repository for the Oxford reading group on Theoretical Machine Learning
 + Week 3: 01/11/2019  [[notes](./notes/Double_Descent_for_Reading_Group.pdf)] The generalization error of random features regression: Precise asymptotics and double descent curve (Song Mei and Andrea Montanari).
 + Week 4: 08/11/2019 [[notes]](./notes/badtrainingdata_notes.pdf)  Learning with Bad Training Data via Iterative Trimmed Loss Minimization. (Yanyao Shen, Sujay Sanghavi)
 + Week 6: 22/11/2019  Learning to Optimize via Information-Directed Sampling (Daniel Russo, Benjamin Van Roy).
-+ Week 7: 29/11/2019  Compression based bound for non-compressed network: unified generalization error analysis of large compressible deep neural network (Taiji Suzuki)
++ Week 7: 29/11/2019  [[notes]](./notes/compression_based_bounds.pdf) Compression based bound for non-compressed network: unified generalization error analysis of large compressible deep neural network (Taiji Suzuki)
 
 We will meet every Friday from 10am to 11.30am in LG03 but on Oct 25. We will meet in LG04 on that day. 
 
